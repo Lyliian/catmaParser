@@ -14,6 +14,8 @@ const catmaStore = useCatmaStore();
 
 const project = ref(null);
 
+const ProjectData = ref(null);
+
 const getProject = async (projectId) => {
   try {
     const response = await api.get(`/projects/${catmaStore.namespace}/${projectId}/export?includeExtendedMetadata=false`);
@@ -28,6 +30,11 @@ const getProjects = async () => {
     const response = await api.get('/projects');
     if (response.data.length > 0) {
       catmaStore.namespace = response.data[0].namespace; // Set the namespace from the first project
+      response.data.forEach(project => {
+        if (project.id === props.projectId) {
+          ProjectData.value = project;
+        }
+      });
     }
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -35,9 +42,8 @@ const getProjects = async () => {
 };
 
 onMounted(async () => {
-  if (!catmaStore.namespace) {
-    await getProjects();
-  }
+  await getProjects();
+
 
   await getProject(props.projectId);
 });
@@ -46,7 +52,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <document-table :documents="project?.documents" />
+  <q-card-section>
+    <div class="text-h5">{{ ProjectData?.name }}</div>
+    <p>{{ ProjectData?.description }}</p>
+  </q-card-section>
+  <q-card-section v-if="project" class="q-pt-none">
+    <document-table :documents="project?.documents" />
+  </q-card-section>
+  <q-spinner v-else class="absolute-center" color="primary" size="50px" />
 </template>
 
 <style scoped>

@@ -30,7 +30,9 @@ const getPhrases = (phrases) => {
 
 <template>
   <div>
-    <q-select v-model="selectedDocument" :options="props.documents" label="Sélectionner un document" option-value="id" option-label="title" emit-value map-options />
+    <q-card-section class="q-px-none q-pt-none">
+      <q-select outlined v-model="selectedDocument" :options="props.documents" label="Sélectionner un document" option-value="id" option-label="title" emit-value map-options />
+    </q-card-section>
     <q-table
       :rows="getDocumentById(selectedDocument)"
       :columns="columns"

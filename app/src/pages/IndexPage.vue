@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page v-if="projects" class="flex flex-center">
     <q-card v-for="project in projects" class="my-card" :key="project.id" style="width: 350px; margin: 10px;">
       <q-card-section class="text-h6">
         {{project.name}}
@@ -11,6 +11,9 @@
         <q-btn color="primary" label="Voir le récapitulatif" :to="'/project/'+project.id" />
       </q-card-actions>
     </q-card>
+  </q-page>
+  <q-page v-else>
+    <q-spinner class="absolute-center" color="primary" size="50px" />
   </q-page>
 </template>
 
