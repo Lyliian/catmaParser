@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, computed} from "vue";
 
 const props = defineProps({
   documents: {
@@ -9,12 +9,36 @@ const props = defineProps({
 });
 
 const selectedDocument = ref(null);
+const phraseFilter = ref("");
+const tagFilter = ref(null);
 
 //function to get the document by id
 const getDocumentById = (id) => {
   if(!id) return [];
   return props.documents.find(doc => doc.id === id).annotations || [];
 };
+
+const tagOptions = computed(() => {
+  const rows = getDocumentById(selectedDocument.value);
+  const tags = rows.map(row => row.tagName).filter(Boolean);
+  return Array.from(new Set(tags)).map(tag => ({ label: tag, value: tag }));
+});
+
+const filteredRows = computed(() => {
+  let rows = getDocumentById(selectedDocument.value);
+  if (phraseFilter.value) {
+    rows = rows.filter(row => {
+      if (!row.phrases || row.phrases.length === 0) return false;
+      return row.phrases.some(phraseObj =>
+        phraseObj.phrase.toLowerCase().includes(phraseFilter.value.toLowerCase())
+      );
+    });
+  }
+  if (tagFilter.value) {
+    rows = rows.filter(row => row.tagName === tagFilter.value);
+  }
+  return rows;
+});
 
 const columns = [
   { name: 'annotationCollectionName', label: 'Collection', field: 'annotationCollectionName', align: 'left' },
@@ -33,10 +57,18 @@ const getPhrases = (phrases) => {
     <q-card-section class="q-px-none q-pt-none">
       <q-select outlined v-model="selectedDocument" :options="props.documents" label="Sélectionner un document" option-value="id" option-label="title" emit-value map-options />
     </q-card-section>
+    <q-card-section class="row q-px-none q-pt-sm justify-between">
+      <q-select outlined v-model="tagFilter" :options="tagOptions" label="Filtrer par tag" clearable emit-value map-options style="width: 40%" />
+      <q-input outlined v-model="phraseFilter" label="Filtrer par phrase" clearable style="width: 40%" />
+    </q-card-section>
     <q-table
-      :rows="getDocumentById(selectedDocument)"
+      :rows="filteredRows"
       :columns="columns"
-      row-key="id">
+      row-key="id"
+      :pagination="{
+        rowsPerPage: 10,
+      }"
+     >
       <template v-slot:body-cell-annotationCollectionName="props">
         <q-td :props="props">
           {{ props.row.annotationCollectionName }}
