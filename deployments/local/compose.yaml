@@ -1,0 +1,10 @@
+services:
+
+###> containers ###
+    ###> nodejs ###
+    nodejs:
+        extends:
+            file: ../services/nodejs.yaml
+            service: nodejs-local
+    ### nodejs ###
+### containers ###
