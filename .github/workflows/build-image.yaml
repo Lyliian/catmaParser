@@ -1,0 +1,15 @@
+name: Publish Image to Docker Hub
+on:
+  [workflow_dispatch]
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Build
+        run: docker build ./deployments/preprod/ -t lyliian/catma-parser:latest
+      - name: Push Docker image to Docker Hub
+        run: |
+        docker login -u lyliiian -p ${{ secrets.DOCKER_HUB_TOKEN }}
+        docker push lyliian/catma-parser:latest
