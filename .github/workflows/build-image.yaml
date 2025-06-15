@@ -11,5 +11,5 @@ jobs:
         run: docker build ./deployments/preprod/ -t lyliian/catma-parser:latest
       - name: Push Docker image to Docker Hub
         run: |
-        docker login -u lyliiian -p ${{ secrets.DOCKER_HUB_TOKEN }}
-        docker push lyliian/catma-parser:latest
+          docker login -u lyliiian -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push lyliian/catma-parser:latest
