@@ -8,8 +8,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Set up Docker Build
-        run: docker build . -t lyliian/catma-parser:latest
+        run: docker build . -t lyliiian/catma-parser:latest
       - name: Push Docker image to Docker Hub
         run: |
           docker login -u lyliiian -p ${{ secrets.DOCKER_HUB_TOKEN }}
-          docker push lyliian/catma-parser:latest
+          docker push lyliiian/catma-parser:latest
