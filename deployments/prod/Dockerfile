@@ -1,7 +1,5 @@
-ARG NODE_IMAGE
-
 ## Compilation js/css
-FROM ${NODE_IMAGE} as frontend
+FROM node:lts as frontend
 
 WORKDIR /app
 
