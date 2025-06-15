@@ -14,5 +14,3 @@ RUN yarn build
 
 # Production stage
 FROM nginx:alpine as production-stage
-
-RUN  ECHO "Building production stage"
