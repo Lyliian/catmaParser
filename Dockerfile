@@ -1,9 +1,10 @@
 ## Compilation js/css
 FROM node:lts as frontend
 
-RUN yarn global add @quasar/cli
 
 WORKDIR /app
+
+RUN yarn global add @quasar/cli
 
 COPY ./app/package*.json ./
 RUN yarn
