@@ -18,10 +18,7 @@ jobs:
         with:
           username: lyliiian
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Build and Push multi-arch image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: lyliiian/catma-parser:latest
+      - name: Build multi-arch image
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/amd64,linux/arm64 -t lyliiian/catma-parser:latest --push .
