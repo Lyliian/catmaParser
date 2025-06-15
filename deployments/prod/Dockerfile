@@ -3,9 +3,9 @@ FROM node:lts as frontend
 
 WORKDIR /app
 
-COPY ./app/package*.json ./
+COPY ../../app/package*.json ./
 RUN yarn
 
-COPY ./app/ ./
+COPY ../../app/ ./
 
 RUN yarn build
