@@ -23,6 +23,6 @@ jobs:
         with:
           context: .
           provenance: false
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: lyliiian/catma-parser:latest
