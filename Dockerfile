@@ -23,3 +23,6 @@ FROM --platform=linux/arm64 arm64v8/nginx as production-stage-arm64
 COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx-debug", "-g", "daemon off;"]
+
+# Étape finale qui sélectionne automatiquement la bonne image
+FROM production-stage-$TARGETARCH as production-stage
