@@ -17,6 +17,6 @@ FROM caddy:2
 COPY ./deployments/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build-stage /app/dist/spa /srv
 COPY ./deployments/entrypoint.sh /usr/bin/entrypoint.sh
-
+RUN chmod +x /usr/bin/entrypoint.sh
 # Entrypoint personnalisé
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
