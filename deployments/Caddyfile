@@ -1,7 +1,3 @@
-{
-    order envsubst before reverse_proxy
-}
-
 :80 {
         root * /srv
         encode zstd gzip
