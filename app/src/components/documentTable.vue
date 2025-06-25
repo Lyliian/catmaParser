@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from "vue";
+import {ref, computed, onMounted} from "vue";
 
 const props = defineProps({
   documents: {
@@ -50,6 +50,12 @@ const columns = [
 const getPhrases = (phrases) => {
   return phrases.map(phrase => phrase.phrase).join(', ');
 };
+
+onMounted(() => {
+  if (props.documents && props.documents.length > 0) {
+    selectedDocument.value = props.documents[0].id;
+  }
+});
 </script>
 
 <template>

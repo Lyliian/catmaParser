@@ -8,9 +8,8 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || ''
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: '/api',
   headers: {
     'Authorization': `Bearer ${API_TOKEN}`
     // Vous pouvez ajouter d'autres headers selon vos besoins

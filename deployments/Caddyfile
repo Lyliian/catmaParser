@@ -7,4 +7,14 @@
         output stdout
         format json
     }
+
+    handle_path /api/* {
+        reverse_proxy https://app.catma.de/api/v1 {
+            header_up Host {upstream_hostport}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
 }
