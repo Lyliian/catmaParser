@@ -12,9 +12,11 @@ RUN yarn
 
 RUN yarn build
 
-# Étape de production avec Caddy
-FROM caddy:alpine as production-stage
+
+FROM caddy:2-builder AS builder
+RUN xcaddy build --with github.com/caddyserver/encode-encoders
+
+FROM caddy:2
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=build-stage /app/dist/spa /srv
-COPY deployments/Caddyfile /etc/caddy/Caddyfile
-EXPOSE 80
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+COPY Caddyfile /etc/caddy/Caddyfile
