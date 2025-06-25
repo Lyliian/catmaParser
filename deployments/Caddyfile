@@ -9,8 +9,7 @@
     }
 
     handle_path /api/* {
-        uri strip_prefix /api
-        uri prepend /api/v1
+        rewrite * /api/v1{path}
         reverse_proxy https://app.catma.de {
             header_up Host {upstream_hostport}
             header_up X-Real-IP {remote_host}
