@@ -19,4 +19,4 @@ RUN xcaddy build --with github.com/caddyserver/encode-encoders
 FROM caddy:2
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=build-stage /app/dist/spa /srv
-COPY Caddyfile /etc/caddy/Caddyfile
+COPY ./deployments/Caddyfile /etc/caddy/Caddyfile
