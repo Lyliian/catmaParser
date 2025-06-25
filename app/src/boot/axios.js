@@ -7,10 +7,10 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-//const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://app.catma.de/api/v1'
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || ''
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   headers: {
     'Authorization': `Bearer ${API_TOKEN}`
     // Vous pouvez ajouter d'autres headers selon vos besoins
