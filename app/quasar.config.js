@@ -43,8 +43,6 @@ export default defineConfig((ctx) => {
         node: 'node20'
       },
       env: {
-        VITE_API_TOKEN: process.env.VITE_API_TOKEN,
-        VITE_API_BASE_URL: process.env.VITE_API_BASE_URL
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
@@ -94,7 +92,7 @@ export default defineConfig((ctx) => {
     devServer: {
       proxy:  {
         '/api' : {
-          target: process.env.VITE_API_BASE_URL || 'https://app.catma.de/api/v1',
+          target: 'https://app.catma.de/api/v1',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         }

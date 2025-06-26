@@ -1,5 +1,6 @@
 import { defineBoot } from '#q-app/wrappers'
 import axios from 'axios'
+import {useCatmaStore} from "stores/catmaStore.js";
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -7,17 +8,23 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const API_TOKEN = import.meta.env.VITE_API_TOKEN || ''
-let headers = {}
 
-if (API_TOKEN !== '') {
-  headers = {
-    'Authorization': `Bearer ${API_TOKEN}`
-  }
-}
 const api = axios.create({
-  baseURL: '/api',
-  headers: headers
+  baseURL: '/api'
+})
+
+// Intercepteur pour ajouter automatiquement le token à chaque requête
+api.interceptors.request.use((config) => {
+  const catmaStore = useCatmaStore()
+
+  // Ajouter le token s'il existe
+  if (catmaStore.token && catmaStore.token.trim() !== '') {
+    config.headers.Authorization = `Bearer ${catmaStore.token}`
+  }
+
+  return config
+}, (error) => {
+  return Promise.reject(error)
 })
 
 export default defineBoot(({ app }) => {
@@ -31,6 +38,5 @@ export default defineBoot(({ app }) => {
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
 })
-
 
 export { api }
