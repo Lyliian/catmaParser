@@ -21,7 +21,9 @@ const getDocumentById = (id) => {
 const tagOptions = computed(() => {
   const rows = getDocumentById(selectedDocument.value);
   const tags = rows.map(row => row.tagName).filter(Boolean);
-  return Array.from(new Set(tags)).map(tag => ({ label: tag, value: tag }));
+  return Array.from(new Set(tags))
+    .sort((a, b) => a.localeCompare(b))
+    .map(tag => ({ label: tag, value: tag }));
 });
 
 const filteredRows = computed(() => {
