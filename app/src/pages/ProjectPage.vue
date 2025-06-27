@@ -18,7 +18,7 @@ const ProjectData = ref(null);
 
 const getProject = async (projectId) => {
   try {
-    const response = await api.get(`/projects/${catmaStore.namespace}/${projectId}/export?includeExtendedMetadata=false`);
+    const response = await api.get(`/projects/${catmaStore.namespace}/${projectId}/export?includeExtendedMetadata=false&pageSize=1000`);
     project.value = response.data;
   } catch (error) {
     console.error('Error fetching project data:', error);
