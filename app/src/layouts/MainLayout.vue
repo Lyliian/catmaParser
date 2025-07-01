@@ -2,9 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title>
-          Catma Parser
-        </q-toolbar-title>
+        <q-btn flat label="Catma Parser" to="/" no-caps square size="lg" class="q-pa-none" />
 
       </q-toolbar>
     </q-header>

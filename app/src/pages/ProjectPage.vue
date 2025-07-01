@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { api } from 'src/boot/axios';
 import { useCatmaStore } from 'src/stores/catmaStore';
 import DocumentTable from "components/documentTable.vue";
@@ -15,6 +15,16 @@ const catmaStore = useCatmaStore();
 const project = ref(null);
 
 const ProjectData = ref(null);
+
+// Computed property to sort documents by title
+const sortedDocuments = computed(() => {
+  if (!project.value?.documents) return [];
+  return [...project.value.documents].sort((a, b) => {
+    const titleA = a.title?.toLowerCase() || '';
+    const titleB = b.title?.toLowerCase() || '';
+    return titleA.localeCompare(titleB);
+  });
+});
 
 const getProject = async (projectId) => {
   try {
@@ -57,7 +67,7 @@ onMounted(async () => {
     <p>{{ ProjectData?.description }}</p>
   </q-card-section>
   <q-card-section v-if="project" class="q-pt-none">
-    <document-table :documents="project?.documents" />
+    <document-table :documents="sortedDocuments" />
   </q-card-section>
   <q-spinner v-else class="absolute-center" color="primary" size="50px" />
 </template>
