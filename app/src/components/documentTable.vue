@@ -39,19 +39,59 @@ const filteredRows = computed(() => {
   if (tagFilter.value) {
     rows = rows.filter(row => row.tagName === tagFilter.value);
   }
+  // Tri descendant par défaut sur phrases[0].startOffset
+  rows = sortRowByOffset(rows);
+  // Tri des phrases à l'intérieur de chaque annotation si un tag est sélectionné
   return rows;
 });
 
+const sortRowByOffset = (rows) => {
+  return rows.sort((a, b) => {
+    const offsetA = a.phrases?.[0]?.startOffset ?? -Infinity;
+    const offsetB = b.phrases?.[0]?.startOffset ?? -Infinity;
+    return offsetA - offsetB;
+  });
+}
+
 const columns = [
   { name: 'annotationCollectionName', label: 'Collection', field: 'annotationCollectionName', align: 'left' },
-  { name: 'tagName', label: 'Tag', field: 'tagName', align: 'left', sortable: true, },
-  { name: 'phrases', label: 'Phrases', field: 'phrases', align: 'left', sortable: true, width: '200px' }
+  { name: 'tagName', label: 'Tag', field: 'tagName', align: 'left',  },
+  { name: 'phrases', label: 'Phrases', field: 'phrases', align: 'left',sortable: true, width: '200px'},
 ];
 
 
 const getPhrases = (phrases) => {
   return phrases.map(phrase => phrase.phrase).join(', ');
 };
+
+const customSort = (rows, sortBy, descending) => {
+  const data = [...rows]
+
+  if (sortBy !== 'phrases') {
+    data.sort((a, b) => {
+      const x = descending ? b : a
+      const y = descending ? a : b
+
+      if (sortBy === 'name') {
+        // string sort
+        return x[ sortBy ] > y[ sortBy ] ? 1 : x[ sortBy ] < y[ sortBy ] ? -1 : 0
+      }
+    })
+
+
+  }
+  data.sort((a, b) => {
+    const x = descending ? b : a
+    const y = descending ? a : b
+    if (x.phrases[0].startOffset !== undefined && y.phrases[0].startOffset !== undefined) {
+      return y.phrases[0].startOffset - x.phrases[0].startOffset;
+    }
+
+    return 0;
+  });
+
+  return data
+}
 
 onMounted(() => {
   if (props.documents && props.documents.length > 0) {
@@ -72,6 +112,8 @@ onMounted(() => {
     <q-table
       :rows="filteredRows"
       :columns="columns"
+      :sort-method="customSort"
+      binary-state-sort
       row-key="id"
       :pagination="{
         rowsPerPage: 10,
@@ -94,6 +136,7 @@ onMounted(() => {
           <span v-if="props.row.phrases.length === 0" class="text-caption">Aucune phrase</span>
           <span v-else class="phrase-content">
             {{getPhrases(props.row.phrases)}}
+
           </span>
         </q-td>
       </template>
