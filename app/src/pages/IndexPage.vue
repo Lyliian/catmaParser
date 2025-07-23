@@ -24,7 +24,7 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <p>Veuillez saisir votre token Catma pour accéder à vos projets :</p>
+        <p>Veuillez saisir votre token <span class="text-italic">Catma</span> pour accéder à vos projets :</p>
         <q-input
           v-model="tokenInput"
           label="Token"
@@ -33,8 +33,19 @@
           error-message="Le token doit contenir au moins 3 caractères"
           @keyup.enter="validateAndSaveToken"
         />
+        <span class="">Pour créer un token vous pouvez suivre <q-btn to="/howto" flat dense no-caps color="info" class="q-pa-none" target="_blank">ce tutoriel</q-btn>.</span>
       </q-card-section>
+      <q-card-section class="q-pt-none q-ma-none">
+        <div class="row">
+         <div class="col-1 content-center">
+           <q-icon name="info" size="md"></q-icon>
+         </div>
+          <div class="col-11">
+            <span class="text-italic">Catma parser</span> ne conserve aucun token. Les données reçues de vos projets <span class="text-italic">Catma</span> ne sont pas et ne seront jamais conservées sur nos serveurs.
+          </div>
+        </div>
 
+      </q-card-section>
       <q-card-actions align="right">
         <q-btn color="primary" label="Valider" @click="validateAndSaveToken" />
       </q-card-actions>
