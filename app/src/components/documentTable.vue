@@ -1,9 +1,9 @@
 <script setup>
 import {ref, computed, onMounted} from "vue";
-import {exportFile, useQuasar} from "quasar";
+import {exportFile, useQuasar } from "quasar";
 
 
-const { $q } = useQuasar();
+const $q = useQuasar()
 
 const props = defineProps({
   documents: {
@@ -60,7 +60,7 @@ const sortRowByOffset = (rows) => {
 const columns = [
   { name: 'annotationCollectionName', label: 'Collection', field: 'annotationCollectionName', align: 'left' },
   { name: 'tagName', label: 'Tag', field: 'tagName', align: 'left',  },
-  { name: 'phrases', label: 'Phrases', field: 'phrases', align: 'left',sortable: true, width: '200px'},
+  { name: 'phrases', label: 'Phrases', field: row => getPhrases(row.phrases), align: 'left',sortable: true, width: '200px'},
 ];
 
 
@@ -139,13 +139,15 @@ const exportTable = () => {
     $q.notify({
       message: 'Le navigateur a bloqué le téléchargement...',
       color: 'negative',
-      icon: 'warning'
+      icon: 'warning',
+      position: 'top',
     })
   } else {
     $q.notify({
       message: 'Tableau exporté avec succès !',
       color: 'positive',
-      icon: 'check'
+      icon: 'check',
+      position: 'top',
     })
   }
 }
@@ -165,6 +167,16 @@ onMounted(() => {
     <q-card-section class="row q-px-none q-pt-sm justify-between">
       <q-select outlined v-model="tagFilter" :options="tagOptions" label="Filtrer par tag" clearable emit-value map-options style="width: 40%" />
       <q-input outlined v-model="phraseFilter" label="Filtrer par phrase" clearable style="width: 40%" />
+      <div class="content-center">
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Exporter le tableau en CSV"
+          no-caps
+          @click="exportTable"
+        />
+      </div>
+
     </q-card-section>
     <q-table
       :rows="filteredRows"
@@ -176,15 +188,6 @@ onMounted(() => {
         rowsPerPage: 10,
       }"
      >
-      <template v-slot:top-right>
-        <q-btn
-          color="primary"
-          icon-right="archive"
-          label="Exporter le tableau en CSV"
-          no-caps
-          @click="exportTable"
-        />
-      </template>
       <template v-slot:body-cell-annotationCollectionName="props">
         <q-td :props="props">
           {{ props.row.annotationCollectionName }}
