@@ -25,14 +25,20 @@
 
       <q-card-section class="q-pt-none">
         <p>Veuillez saisir votre token <span class="text-italic">Catma</span> pour accéder à vos projets :</p>
-        <q-input
-          v-model="tokenInput"
-          label="Token"
-          outlined
-          :error="tokenError"
-          error-message="Le token doit contenir au moins 3 caractères"
-          @keyup.enter="validateAndSaveToken"
-        />
+        <q-input v-model="tokenInput" filled :type="isPwd ? 'password' : 'text'"
+                 label="Token"
+                 outlined
+                 :error="tokenError"
+                 error-message="Le token doit contenir au moins 3 caractères"
+                 @keyup.enter="validateAndSaveToken">
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
         <span class="">Pour créer un token vous pouvez suivre <q-btn to="/howto" flat dense no-caps color="info" class="q-pa-none" target="_blank">ce tutoriel</q-btn>.</span>
       </q-card-section>
       <q-card-section class="q-pt-none q-ma-none">
@@ -65,6 +71,7 @@ const catmaStore = useCatmaStore();
 const showTokenDialog = ref(false);
 const tokenInput = ref('');
 const tokenError = ref(false);
+const isPwd = ref(true);
 
 // Computed pour vérifier si on doit afficher la dialog
 const shouldShowTokenDialog = computed(() => {
