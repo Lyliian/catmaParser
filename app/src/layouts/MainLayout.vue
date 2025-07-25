@@ -4,6 +4,10 @@
       <q-toolbar>
         <q-btn flat label="CATMA Parser" to="/" no-caps square size="lg" class="q-pa-none" />
 
+        <q-space />
+
+        <!-- Composant de gestion du token -->
+        <TokenManager />
       </q-toolbar>
     </q-header>
 
@@ -14,4 +18,5 @@
 </template>
 
 <script setup>
+import TokenManager from './tokenManager.vue'
 </script>
